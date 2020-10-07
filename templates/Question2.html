@@ -2,30 +2,86 @@
 <html>
     <head>
         <title>Question</title>
-        <link rel="stylesheet" href="Home.css">
+        <link rel="stylesheet" href="/static/css/Home.css">
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
         <style>
             body{
                 background-color: rgb(230, 96, 44);
             }
         </style>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
     </head>
-    <body>
+    <body onload="autoclick()" onkeydown="return (event.keyCode == 154)">
         <div class="container" align="center">
             <div class="jumbotron">
-                <form class="" action="Section2Submission.html" method="post">
-                    <p>x/y</p>
-                    <p>What is the average of first five multiples of 12?</p>
-                    <p>A. 36</p>
-                    <p>B. 38</p>
-                    <p>C. 40</p>
-                    <p>D. 42</p>
-                    <input type="text" name="x" value="" placeholder="Enter Answer">
+                <form class="" action="/sec2sub/" method="post">
+                    {% csrf_token %}
+                    {% for i in object_list %}
+                    <p id="q">{{i.question}}</p>
+                    <p id="1">{{i.la}}</p>
+                    <p id="2">{{i.lb}}</p>
+                    <p id="3">{{i.lc}}</p>
+                    <p id="4">{{i.ld}}</p>
+                    <input type="text" name="x" value="" placeholder="Enter Answer" autofocus="autofocus" />
                     <p></p>
-                    <button type="button" class="btn btn-primary" name="nxt" onclick="window.location.href='Question2.html'">Next</button>
+                    {% endfor %}
+                    <button  style="display: none;" type="button" class="btn btn-success" id="dummy" >Submit1</button>
+                    <button type="button" class="btn btn-primary" name="nxt" onclick="window.location.href='/verbal/'">Next</button>
                     <button type="submit" class="btn btn-success" name="submit">Submit</button>
+                    <button type="button" class="btn btn-success" id="dummy1" onclick="rep()">Repeat</button>
                 </form>
             </div>
         </div>
     </body>
+    <script type="text/javascript">
+            function autoclick() {
+                console.log("nnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnn");
+                $("#dummy").click()
+                    console.log("yyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyy");
+                    var question = document.getElementById("q").textContent;
+                    console.log(question);
+                    var option1 = document.getElementById("1").textContent;
+                    var option2 = document.getElementById("2").textContent;
+                    var option3 = document.getElementById("3").textContent;
+                    var option4 = document.getElementById("4").textContent;
+                    $.ajax({
+                        type: 'POST',
+                        url:  "/tts/",
+                        data:{"question": question,"option1":option1,"option2":option2,"option3":option3,"option4":option4},
+                        success: function (response) {
+                            console.log("====================================================");
+                        },
+                        error: function (response) {
+                            console.log("66666666666666666666666666666666666666666666");
+                            console.log(response);
+                
+                    }
+                }
+                )
+            
+            }
+            function rep() {
+                var question = document.getElementById("q").textContent;
+                console.log(question);
+                var option1 = document.getElementById("1").textContent;
+                var option2 = document.getElementById("2").textContent;
+                var option3 = document.getElementById("3").textContent;
+                var option4 = document.getElementById("4").textContent;
+                $.ajax({
+                    type: 'POST',
+                    url:  "/tts/",
+                    data:{"question": question,"option1":option1,"option2":option2,"option3":option3,"option4":option4},
+                    success: function (response) {
+                        console.log("====================================================");
+                    },
+                    error: function (response) {
+                        console.log("66666666666666666666666666666666666666666666");
+                        console.log(response);
+                
+                }
+            }
+            )
+        }
+        </script>
 </html>

@@ -2,7 +2,7 @@
 <html>
     <head>
         <title>Login</title>
-        <link rel="stylesheet" href="Home.css">
+        <link rel="stylesheet" href="/static/css/Home.css">
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
         <style>
             body{
@@ -13,7 +13,8 @@
     <body>
         <div class="container" align="center">
             <div class="jumbotron">
-                <form class="" action="Home.html" method="post">
+                <form class="" action="/home/" method="post">
+                    {% csrf_token %}
                     <p>LogIn ID:</p>
                     <input type="text" name="login" value="">
                     <br><br><br>
@@ -21,7 +22,7 @@
                     <input type="password" name="passwd" value="">
                     <br><br><br>
                     <input type="submit" class="btn btn-success" value="Login">
-                    <button type="button" class="btn btn-primary" name="reg" onclick="window.location.href='Register.html'">Register</button>
+                    <button type="button" class="btn btn-primary" name="reg" onclick="window.location.href='/register/'">Register</button>
                 </form>
             </div>
         </div>

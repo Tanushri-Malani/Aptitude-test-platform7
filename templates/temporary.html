@@ -1,0 +1,85 @@
+function tts() {
+                            document.write("+++++++++++++++++++++++++++++++++++++++++");
+                            if ('speechSynthesis' in window) {
+                                var msg = new SpeechSynthesisUtterance();
+                                msg.text = "Question is";
+                                msg.lang = "en-US";
+                                msg.text = msg;
+                                msg.volume = 1;
+                                msg.rate = 1;
+                                msg.pitch = 1; 
+                                window.speechSynthesis.speak(msg);
+                                document.write("+++++++++++++++++++++++++++++++++++++++++");
+                            }else{
+                                document.write("+++++++++++++++++++++++++++++++++++++++++");
+                                alert("Sorry, your browser doesn't support text to speech!");
+                        }
+
+
+
+
+<script src="js/speakClient.js">
+                        speak("hello world I am happy")
+                        document.write("------------------------------------------------")
+                    </script>
+<div id="audio"></div>
+
+
+
+'{% url 'tts' %}'
+
+
+
+
+
+     
+
+
+        document.getElementById("dummy").click();
+
+
+
+        print("----------++++++++++++++++++++++++++++++++++++++++++++++++++++++-----------------")
+    engine = pyttsx3.init()  
+    x='tanu you are awesome'
+    engine.say(x) 
+    engine.say("Thank you") 
+    engine.runAndWait()
+    engine.stop()
+    return HttpResponse("")
+
+
+
+
+    onclick="location.href='/tts/'"
+
+
+
+
+    r = sr.Recognizer()
+        c=0
+        engine = pyttsx3.init()
+        with sr.Microphone() as source:
+            #print("Talk")
+            
+            #r.say('Hey I am Listening ')
+            #r.runAndWait()
+            while(c==0):
+                engine.say("Hey I am listening")
+                engine.runAndWait()
+                print("again")
+                audio_text = r.listen(source)
+                print("try")
+                print(r.recognize_google(audio_text))
+                if r.recognize_google(audio_text) in ['option 1','option 2','option 3','option 4','option one','option two','option three','option four']:
+                    print("I got your ans")
+                    c=1
+                    engine.say("I got your answer")
+                    #engine.say("Time over, thanks")
+                    engine.runAndWait()
+                    break
+                else:
+                    print("else")
+
+
+<button type="button" class="btn btn-success" name="start" onclick="window.location.href='/logical/'">Start Test</button>

@@ -12,45 +12,54 @@
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 
     </head>
-    <body onload="autoclick()">
+    <body onload="autoclick()" onkeydown="return (event.keyCode == 154)">
         <div class="container" align="center">
             <div class="jumbotron">
-                <form class="" action="Section1Submission.html" method="post">
+                <form class="" action="/sec1sub/" method="post" id="qform">
+                    {% csrf_token %}
                     {% for i in object_list %} 
                     <p id="q">{{i.question}}</p>
                     <p id="1">{{i.la}}</p>
                     <p id="2">{{i.lb}}</p>
                     <p id="3">{{i.lc}}</p>
                     <p id="4">{{i.ld}}</p>
-                    <input type="text" name="x" value="" placeholder="Enter Answer">
                     
                     
+                    <input id="opt" type="text" name="x" value="" autofocus="autofocus" />
+
+
                     <p></p>
                     {% endfor %}
                     <button  style="display: none;" type="button" class="btn btn-success" id="dummy" >Submit1</button>
-                    <button type="button" class="btn btn-primary" name="nxt" onclick="window.location.href='Question1.html'">Next</button>
+                    <button type="button" class="btn btn-primary" name="nxt" onclick="window.location.href='/logical/'">Next</button>
                     <button type="submit" class="btn btn-success" name="submit">Submit</button>
+                    <button type="button" class="btn btn-success" id="dummy1" >Repeat</button>
                 </form>
+
             </div>
         </div>
     </body>
     <script type="text/javascript">
             function autoclick() {
+                
                 console.log("nnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnn");
+                
+                console.log("yyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyy");
+                var question = document.getElementById("q").textContent;
+                console.log(question);
+                var option1 = document.getElementById("1").textContent;
+                var option2 = document.getElementById("2").textContent;
+                var option3 = document.getElementById("3").textContent;
+                var option4 = document.getElementById("4").textContent;
+                
                 $("#dummy").click()
-                    console.log("yyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyy");
-                    var question = document.getElementById("q").textContent;
-                    console.log(question);
-                    var option1 = document.getElementById("1").textContent;
-                    var option2 = document.getElementById("2").textContent;
-                    var option3 = document.getElementById("3").textContent;
-                    var option4 = document.getElementById("4").textContent;
                     $.ajax({
-                        type: 'GET',
+                        type: 'POST',
                         url:  "/tts/",
                         data:{"question": question,"option1":option1,"option2":option2,"option3":option3,"option4":option4},
                         success: function (response) {
-                            console.log("====================================================");
+                            console.log("===================================================="); 
+                            
                         },
                         error: function (response) {
                             console.log("66666666666666666666666666666666666666666666");
@@ -61,5 +70,31 @@
                 )
             
             }
+
+            
+       
+            function rep() {
+                var question = document.getElementById("q").textContent;
+                console.log(question);
+                var option1 = document.getElementById("1").textContent;
+                var option2 = document.getElementById("2").textContent;
+                var option3 = document.getElementById("3").textContent;
+                var option4 = document.getElementById("4").textContent;
+                $.ajax({
+                    type: 'POST',
+                    url:  "/tts/",
+                    data:{"question": question,"option1":option1,"option2":option2,"option3":option3,"option4":option4},
+                    success: function (response) {
+                        console.log("====================================================");
+                        
+                    },
+                    error: function (response) {
+                        console.log("66666666666666666666666666666666666666666666");
+                        console.log(response);
+                
+                }
+            }
+            )
+        }
         </script>
 </html>

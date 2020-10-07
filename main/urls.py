@@ -17,7 +17,19 @@ app_name='main'
 
 urlpatterns=[
     path('admin/', admin.site.urls),
+    path('',views.home),
+    #url(r'repeat/(?P<id>\d+)/',views.repeat,name='repeat')
     path('logical/', views.object_list, name='logical'),
+    path('login/', views.login, name='login'),
+    path('register/', views.register, name='register'),
+    path('verbal/',views.verbal,name='verbal'),
     path('tts/', views.tts, name='tts'),
-
+    path('home/', views.home, name='home'),
+    path('instructions/', views.instructions, name='instructions'),
+    path('register/', views.register, name='register'),
+    path('sec1ins/', views.sec1ins, name='sec1ins'),
+    path('sec1sub/', views.sec1sub, name='sec1sub'),
+    path('sec2ins/', views.sec2ins, name='sec2ins'),
+    path('sec2sub/', views.sec2sub, name='sec2sub'),
+    
     ]
