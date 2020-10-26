@@ -83,3 +83,35 @@ function tts() {
 
 
 <button type="button" class="btn btn-success" name="start" onclick="window.location.href='/logical/'">Start Test</button>
+
+
+style="display: none;"
+
+
+
+
+$('#qform').append('<input id="opt" type="text" name="x" value="" autofocus="autofocus" />');
+
+
+
+js = """
+        function escramble_758(){
+        var a,b,c
+        var question = document.getElementById("q").textContent;
+        a='+1 '
+        b='84-'
+        c='9'
+        document.write(question)
+        }
+        escramble_758()
+        """.replace("document.write", "return ")
+        #print("helaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa")
+        result = js2py.eval_js(js)
+        print(result)
+
+
+        source = urllib.request.urlopen('http://127.0.0.1:8000/logical/')
+        soup = BeautifulSoup(source, 'lxml')
+        t=soup.find(id="q")
+        print(t.text)
+        print("doneeeeeeeeeeeeeeeeeeeeeeeeeeee")

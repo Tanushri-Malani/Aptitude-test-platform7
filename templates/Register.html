@@ -13,21 +13,21 @@
     <body>
         <div class="container" align="center">
             <div class="jumbotron">
-                <form class="" action="/login/" method="post">
+                <form class="" action="/register/" method="POST">
                     {% csrf_token %}
                     <p>Enter First Name:
-                    <input type="text" name="x" value=""></p><br>
+                    <input type="text" name="first_name" value=""></p><br>
                     <p>Enter Last Name:
-                    <input type="text" name="x" value=""></p><br>
+                    <input type="text" name="last_name" value=""></p><br>
                     <p>Enter Email Address:
-                    <input type="Email" name="x" value=""></p><br>
+                    <input type="Email" name="email" value=""></p><br>
                     <p>Enter UserName:
-                    <input type="text" name="x" value=""></p><br>
+                    <input type="text" name="username" value=""></p><br>
                     <p>Enter Password:
-                    <input type="password" name="x" value=""></p><br>
+                    <input type="password" name="password1" value=""></p><br>
                     <p>Confirm Password:
-                    <input type="password" name="x" value=""></p><br>
-                    <button type="submit" class="btn btn-success" name="submit">Submit</button>
+                    <input type="password" name="password2" value=""></p><br>
+                    <input type="Submit" class="btn btn-success" value="Register"><br>
                     <button type="button" class="btn btn-primary" name="reg" onclick="window.location.href='/login/'">Login</button>
                 </form>
                 </div>
@@ -37,5 +37,12 @@
           crossorigin="anonymous"></script>
         <script src="scr.js">
         </script> -->
+        <div>
+            
+            {% for message in messages %}
+            <h3> {{ message }} </h3>
+            {% endfor %}
+
+        </div>
     </body>
 </html>

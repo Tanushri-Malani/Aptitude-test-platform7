@@ -15,46 +15,103 @@
     <body onload="autoclick()" onkeydown="return (event.keyCode == 154)">
         <div class="container" align="center">
             <div class="jumbotron">
-                <form class="" action="/sec2sub/" method="post">
+                <form class="" action="/sec2sub/" method="post" id="qform">
                     {% csrf_token %}
                     {% for i in object_list %}
-                    <p id="q">{{i.question}}</p>
-                    <p id="1">{{i.la}}</p>
-                    <p id="2">{{i.lb}}</p>
-                    <p id="3">{{i.lc}}</p>
-                    <p id="4">{{i.ld}}</p>
-                    <input type="text" name="x" value="" placeholder="Enter Answer" autofocus="autofocus" />
-                    <p></p>
+                    <p class="q">{{i.question}}</p>
+                    <p class="one">{{i.la}}</p>
+                    <p class="two">{{i.lb}}</p>
+                    <p class="three">{{i.lc}}</p>
+                    <p class="four">{{i.ld}}</p>
+
+                    <input type="text" name="x" value="{{ forloop.counter }}" class="inp" placeholder="Enter Answer" autofocus="autofocus" />
+                    <button type="button" class="btn btn-success" id="dummy1" onclick="rep()">Repeat</button>
+                    <br><br><br><br>
+                
                     {% endfor %}
+
                     <button  style="display: none;" type="button" class="btn btn-success" id="dummy" >Submit1</button>
                     <button type="button" class="btn btn-primary" name="nxt" onclick="window.location.href='/verbal/'">Next</button>
                     <button type="submit" class="btn btn-success" name="submit">Submit</button>
-                    <button type="button" class="btn btn-success" id="dummy1" onclick="rep()">Repeat</button>
+                    
                 </form>
             </div>
         </div>
     </body>
     <script type="text/javascript">
             function autoclick() {
+                
                 console.log("nnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnn");
+                
+                var x = document.getElementById("qform").querySelectorAll("p.q");
+                var i;
+                var que = [];
+                for (i = 0; i < x.length; i++) {
+                    if (!String(x[i].textContent).endsWith("?")){
+                        que[i]=String(x[i].textContent)+"?";
+                    }
+                    else{
+                        que[i]=x[i].textContent;
+                    }
+                    
+                }
+                console.log(que);
+
+                var y = document.getElementById("qform").querySelectorAll("p.one");
+                var j;
+                var o = [];
+                for (j = 0; j < y.length; j++) {
+                    o[j]=String(y[j].textContent)+"#";
+                }
+
+                var z = document.getElementById("qform").querySelectorAll("p.two");
+                var k;
+                var op = [];
+                for (k = 0;  k< z.length; k++) {
+                    op[k]=String(z[k].textContent)+"#";
+
+                }
+                
+
+                var w = document.getElementById("qform").querySelectorAll("p.three");
+                var l;
+                var opt = [];
+                for (l = 0; l < w.length; l++) {
+                    opt[l]=String(w[l].textContent)+"#";
+                }
+
+                var v = document.getElementById("qform").querySelectorAll("p.four");
+                var m;
+                var opti = [];
+                for (m = 0; m< v.length; m++) {
+                    opti[m]=String(v[m].textContent)+"#";
+                    
+                }
+                console.log(opti);
+
+
+                console.log("yyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyy");
+                
+                
                 $("#dummy").click()
-                    console.log("yyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyy");
-                    var question = document.getElementById("q").textContent;
-                    console.log(question);
-                    var option1 = document.getElementById("1").textContent;
-                    var option2 = document.getElementById("2").textContent;
-                    var option3 = document.getElementById("3").textContent;
-                    var option4 = document.getElementById("4").textContent;
+                    que = que.join();
+                    o = o.join();
+                    op = op.join();
+                    opt = opt.join();
+                    opti = opti.join();
                     $.ajax({
-                        type: 'POST',
+                        type: 'POST', 
                         url:  "/tts/",
-                        data:{"question": question,"option1":option1,"option2":option2,"option3":option3,"option4":option4},
-                        success: function (response) {
-                            console.log("====================================================");
+                        data:{'que': que,'o':o,'op':op,'opt':opt,'opti':opti},
+                        success: function (data) {
+                            console.log("===================================================="); 
+                            
+                            
                         },
-                        error: function (response) {
+                        error: function (data) {
                             console.log("66666666666666666666666666666666666666666666");
-                            console.log(response);
+                            console.log(data);
+
                 
                     }
                 }

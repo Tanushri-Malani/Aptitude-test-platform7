@@ -22,6 +22,7 @@ urlpatterns=[
     path('logical/', views.object_list, name='logical'),
     path('login/', views.login, name='login'),
     path('register/', views.register, name='register'),
+    url('logout/', views.logout, name='logout'),
     path('verbal/',views.verbal,name='verbal'),
     path('tts/', views.tts, name='tts'),
     path('home/', views.home, name='home'),

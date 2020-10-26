@@ -14,12 +14,15 @@
         <div class="container" align="center">
             <div class="jumbotron">
                 <p>Instructions</p>
+                {% if user.is_authenticated %}
                 <form class="" action="/logical/" method="post">
                     {% csrf_token %}
                     <input type="text" name="yesno" value="" placeholder="Enter Answer">
                     <button type="submit" class="btn btn-success" name="submit">Submit</button>
                 </form>
-                
+                {% else %}
+                <button type="button" class="btn btn-primary" name="reg" onclick="window.location.href='/login/'">Login</button>
+                {% endif %}
             </div>
         </div>
     </body>

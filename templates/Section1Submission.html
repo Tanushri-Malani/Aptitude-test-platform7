@@ -15,6 +15,10 @@
             <div class="jumbotron">
                 <p>Section-1 Submitted Successfully</p>
                 <button type="button" class="btn btn-success" name="start" onclick="window.location.href='/sec2ins/'">Start Section-2</button>
+                <button type="button" class="btn btn-danger" name="start" onClick="document.getElementById('logoutform').submit()">LogOut</button>
+                <form id="logoutform" method="POST" action="/logout/">
+                    {% csrf_token %}
+                    <input type="hidden">
             </div>
         </div>
     </body>

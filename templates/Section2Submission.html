@@ -16,7 +16,14 @@
                 <p>Section-2 Submitted.</p>
                 <p>Test Completed Successfully.</p>
                 <button type="button" class="btn btn-primary" name="start" onclick="window.location.href='/home/'">Home</button>
-                <button type="button" class="btn btn-danger" name="start" onclick="window.location.href='/login/'">LogOut</button>
+                {% if user.is_authenticated %}
+                <button type="button" class="btn btn-danger" name="start" onClick="document.getElementById('logoutform').submit()">LogOut</button>
+                <form id="logoutform" method="POST" action="/logout/">
+                    {% csrf_token %}
+                    <input type="hidden">
+                {% else %}
+                <button type="button" class="btn btn-primary" name="reg" onclick="window.location.href='/login/'">Login</button>
+                {% endif %}
             </div>
         </div>
     </body>
