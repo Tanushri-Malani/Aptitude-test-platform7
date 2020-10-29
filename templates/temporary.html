@@ -115,3 +115,69 @@ js = """
         t=soup.find(id="q")
         print(t.text)
         print("doneeeeeeeeeeeeeeeeeeeeeeeeeeee")
+
+        from selenium import webdriver
+from selenium.webdriver.common.keys import Keys
+
+driver = webdriver.Firefox()
+driver.get("http://www.youradress.org")#put here the adress of your page
+elem = driver.find_elements_by_xpath("//*[@type='submit']")#put here the content you have put in Notepad, ie the XPath
+button = driver.find_element_by_id('buttonID') //Or find button by ID.
+print(elem.get_attribute("class"))
+driver.close()
+
+
+
+
+'''driver = webdriver.Chrome(executable_path=r'C:\Users\Tanu\Documents\chromedriver.exe')
+
+        #link = "http://127.0.0.1:8000/logical/"
+        #print( driver.current_url)
+        #data = requests.request("GET", link)
+        #url = data.url
+        #print(url)
+        #driver.get('http://127.0.0.1:8000/logical/')
+        #text_area = driver.find_element_by_id('ques1sub')
+        #text_area.click()
+        #window_after = driver.window_handles[1]
+        #driver.switch_to.window(window_after)
+        #
+        #driver.switch_to.frame('ques1sub')
+        WebDriverWait(driver, 10).until(EC.element_to_be_clickable((By.XPATH, './/*[@id="qform"]//input[@type="submit"]'))).submit()
+        print("weeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeebbbbbbbbbbbbb")
+        '''
+
+
+
+
+var question = document.getElementById("q").textContent;
+                console.log(question);
+                var option1 = document.getElementById("1").textContent;
+                var option2 = document.getElementById("2").textContent;
+                var option3 = document.getElementById("3").textContent;
+                var option4 = document.getElementById("4").textContent;
+
+
+
+
+number_comment|add:'1'
+
+
+
+value="{{ forloop.counter }}"
+
+
+
+{% if user.is_authenticated %}
+                <button type="button" class="btn btn-danger" name="start" onClick="document.getElementById('logoutform').submit()">LogOut</button>
+                <form id="logoutform" method="POST" action="/logout/">
+                    {% csrf_token %}
+                    <input type="hidden">
+                {% else %}
+                <button type="button" class="btn btn-primary" name="reg" onclick="window.location.href='/login/'">Login</button>
+{% endif %}
+
+
+NEXT button---
+<button type="button" class="btn btn-primary" name="nxt" onclick="window.location.href='/logical/'">Next</button>
+<button type="button" class="btn btn-primary" name="nxt" onclick="window.location.href='/verbal/'">Next</button>

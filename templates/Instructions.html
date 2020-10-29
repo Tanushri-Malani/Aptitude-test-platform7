@@ -18,7 +18,7 @@
                 <form class="" action="/logical/" method="post">
                     {% csrf_token %}
                     <input type="text" name="yesno" value="" placeholder="Enter Answer">
-                    <button type="submit" class="btn btn-success" name="submit">Submit</button>
+                    <button type="submit" class="btn btn-success" name="submit">Proceed</button>
                 </form>
                 {% else %}
                 <button type="button" class="btn btn-primary" name="reg" onclick="window.location.href='/login/'">Login</button>

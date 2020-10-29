@@ -24,6 +24,8 @@
                     <p class="three">{{i.lc}}</p>
                     <p class="four">{{i.ld}}</p>
                     
+
+                    
                     
                     <input type="text" name="x" value="" class="inp" autofocus="autofocus" />
                     <button type="button" class="btn btn-success" id="{{ forloop.counter }}" onclick="rep(this.id)">Repeat</button>
@@ -32,7 +34,7 @@
                     <br><br><br><br>
                     {% endfor %}
                     <button  style="display: none;" type="button" class="btn btn-success" id="dummy" >Submit1</button>
-                    <button type="button" class="btn btn-primary" name="nxt" onclick="window.location.href='/logical/'">Next</button>
+                    
                     <button type="submit" class="btn btn-success" name="submit" id="ques1sub">Submit</button>
                     
                 </form>
@@ -44,7 +46,8 @@
             function autoclick() {
                 
                 console.log("nnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnn");
-                
+                var mod="{{ mod }}";
+
                 var x = document.getElementById("qform").querySelectorAll("p.q");
                 var i;
                 var que = [];
@@ -90,6 +93,7 @@
                     
                 }
                 console.log(opti);
+            
 
 
                 console.log("yyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyy");
@@ -104,7 +108,7 @@
                     $.ajax({
                         type: 'POST', 
                         url:  "/tts/",
-                        data:{'que': que,'o':o,'op':op,'opt':opt,'opti':opti},
+                        data:{'que': que,'o':o,'op':op,'opt':opt,'opti':opti,'mod':mod,'csrfmiddlewaretoken': '{{ csrf_token }}',},
                         success: function (data) {
                             console.log("===================================================="); 
                             
@@ -124,7 +128,7 @@
             
        
             function rep(cid) {
-                console.log(cid);
+                console.log(cid,"ccccccccccccccccccccccccccccccccccccccccccccc");
 
                 var x = document.getElementById("qform").querySelectorAll("p.q");
                 var que = [];
@@ -164,8 +168,8 @@
                     opti = opti.join();
                     $.ajax({
                         type: 'POST', 
-                        url:  "/tts/",
-                        data:{'que': que,'o':o,'op':op,'opt':opt,'opti':opti},
+                        url:  "/tts_repeat/",
+                        data:{'que': que,'o':o,'op':op,'opt':opt,'opti':opti,'csrfmiddlewaretoken': '{{ csrf_token }}',},
                         success: function (data) {
                             console.log("===================================================="); 
                             

@@ -19,12 +19,15 @@ urlpatterns=[
     path('admin/', admin.site.urls),
     path('',views.home),
     #url(r'repeat/(?P<id>\d+)/',views.repeat,name='repeat')
+    path('pscores/', views.pscores, name='pscores'),
     path('logical/', views.object_list, name='logical'),
     path('login/', views.login, name='login'),
     path('register/', views.register, name='register'),
     url('logout/', views.logout, name='logout'),
     path('verbal/',views.verbal,name='verbal'),
     path('tts/', views.tts, name='tts'),
+    path('tts1/', views.tts1, name='tts1'),
+    path('tts_repeat/', views.tts_repeat, name='tts_repeat'),
     path('home/', views.home, name='home'),
     path('instructions/', views.instructions, name='instructions'),
     path('register/', views.register, name='register'),
@@ -32,5 +35,6 @@ urlpatterns=[
     path('sec1sub/', views.sec1sub, name='sec1sub'),
     path('sec2ins/', views.sec2ins, name='sec2ins'),
     path('sec2sub/', views.sec2sub, name='sec2sub'),
+    path('result/', views.result, name='result'),
     
     ]

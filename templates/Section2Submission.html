@@ -15,15 +15,9 @@
             <div class="jumbotron">
                 <p>Section-2 Submitted.</p>
                 <p>Test Completed Successfully.</p>
-                <button type="button" class="btn btn-primary" name="start" onclick="window.location.href='/home/'">Home</button>
-                {% if user.is_authenticated %}
-                <button type="button" class="btn btn-danger" name="start" onClick="document.getElementById('logoutform').submit()">LogOut</button>
-                <form id="logoutform" method="POST" action="/logout/">
-                    {% csrf_token %}
-                    <input type="hidden">
-                {% else %}
-                <button type="button" class="btn btn-primary" name="reg" onclick="window.location.href='/login/'">Login</button>
-                {% endif %}
+                <button type="button" class="btn btn-primary" name="start" onclick="window.location.href='/result/'">Check result</button>
+                
+                
             </div>
         </div>
     </body>
