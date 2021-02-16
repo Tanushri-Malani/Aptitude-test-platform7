@@ -9,17 +9,60 @@
                 background-color: rgb(230, 96, 44);
             }
         </style>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     </head>
-    <body>
+    <body onload="autoclick()" onkeydown="return (event.keyCode == 154)">
         <div class="container" align="center">
-            <div class="jumbotron">
+            <div class="jumbotron" id="jumbo">
                 <p>Section-1 Submitted Successfully</p>
+                <button  style="display: none;" type="button" class="btn btn-success" id="dummy" >Submit1</button>
                 <button type="button" class="btn btn-success" name="start" onclick="window.location.href='/sec2ins/'">Start Section-2</button>
-                <button type="button" class="btn btn-danger" name="start" onClick="document.getElementById('logoutform').submit()">LogOut</button>
-                <form id="logoutform" method="POST" action="/logout/">
-                    {% csrf_token %}
-                    <input type="hidden">
             </div>
         </div>
     </body>
+    <script type="text/javascript">
+            function autoclick() {
+                
+                console.log("nnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnn");
+
+                var x = document.getElementById("jumbo").querySelectorAll("p");
+                var i;
+                var que = [];
+                for (i = 0; i < x.length; i++) {
+                    if (!String(x[i].textContent).endsWith("?")){
+                        que[i]=String(x[i].textContent)+"?";
+                    }
+                    else{
+                        que[i]=x[i].textContent;
+                    }
+                    
+                }
+                    
+                console.log(que);
+
+                console.log("yyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyy");
+                
+                
+                $("#dummy").click()
+                    que = que.join();
+                    
+                    $.ajax({
+                        type: 'POST', 
+                        url:  "/tts1/",
+                        data:{'que': que,'csrfmiddlewaretoken': '{{ csrf_token }}',},
+                        success: function (data) {
+                            console.log("===================================================="); 
+                            
+                            
+                        },
+                        error: function (data) {
+                            console.log("66666666666666666666666666666666666666666666");
+
+                
+                    }
+                }
+                )
+            
+            }
+</script>
 </html>

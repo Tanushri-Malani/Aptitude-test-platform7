@@ -28,6 +28,16 @@ Verbal = type('Verbal',(models.Model,),{
     '__module__': __name__,
     })
 
+Quantitative = type('Quantitative',(models.Model,),{
+    'question':models.CharField(max_length=500),
+    'la':models.CharField(max_length=500),
+    'lb':models.CharField(max_length=500),
+    'lc':models.CharField(max_length=500),
+    'ld':models.CharField(max_length=500),
+    'ans':models.CharField(max_length=500),
+    '__module__': __name__,
+    })
+
 class Test(models.Model):
 	total=models.DecimalField(max_digits=100,decimal_places=0,default=0)
 	timestamp=models.DateTimeField(auto_now_add=True,auto_now=False)
@@ -41,6 +51,7 @@ class Result(models.Model):
 	final_total=models.DecimalField(max_digits=100,decimal_places=0,default=0)
 	Logical=models.DecimalField(max_digits=100,decimal_places=0,default=0)
 	Verbal=models.DecimalField(max_digits=100,decimal_places=0,default=0)
+	Quantitative=models.DecimalField(max_digits=100,decimal_places=0,default=0)
 	def __str__(self):
-		return (str(self.user)+str(self.id))
+		return (str(self.user)+" : "+str(self.id))
 

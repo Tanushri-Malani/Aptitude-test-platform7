@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <title>Home</title>
+        <title>Section Submission</title>
         <link rel="stylesheet" href="/static/css/Home.css">
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
         <style>
@@ -14,24 +14,16 @@
     <body onload="autoclick()" onkeydown="return (event.keyCode == 154)">
         <div class="container" align="center">
             <div class="jumbotron" id="jumbo">
-                <p style="font-size: 40px;">Your total score is {{total}}.</p>
-                <p>You scored {{s1s}} in Logical reasoning.</p>
-                <p>You scored {{s2s}} in Verbal reasoning.</p>
-                <p>You scored {{s3s}} in Quantitative reasoning.</p>
-                {% if user.is_authenticated %}
+                <p>Section-3 Submitted.</p>
+                <p>Test Completed Successfully.</p>
                 <button  style="display: none;" type="button" class="btn btn-success" id="dummy" >Submit1</button>
-                <button type="button" class="btn btn-primary" name="start" onclick="window.location.href='/home/'">Home</button>
-                <button type="button" class="btn btn-danger" name="start" onClick="document.getElementById('logoutform').submit()">LogOut</button>
-                <form id="logoutform" method="POST" action="/logout/">
-                    {% csrf_token %}
-                    <input type="hidden">
-                {% else %}
-                <button type="button" class="btn btn-primary" name="reg" onclick="window.location.href='/login/'">Login</button>
-                {% endif %}
+                <button type="button" class="btn btn-primary" name="start" onclick="window.location.href='/result/'">Check result</button>
+                
+                
+                
             </div>
         </div>
     </body>
-
     <script type="text/javascript">
             function autoclick() {
                 
@@ -51,7 +43,6 @@
                     }
                     
                 }
-
                 for (i = 0; i < y.length; i++) {
                     if (!String(y[i].textContent).endsWith("?")){
                         but[i]=String(y[i].textContent)+"?";
@@ -62,7 +53,7 @@
                     
                 }
                     
-                console.log(que);
+                console.log(but+"bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb");
 
                 console.log("yyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyy");
                 

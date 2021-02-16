@@ -15,9 +15,9 @@
             <div class="jumbotron">
                 <p>Instructions</p>
                 {% if user.is_authenticated %}
-                <form class="" action="/logical/" method="post">
+                <form class="" action="/sec1ins/" method="post">
                     {% csrf_token %}
-                    <input type="text" name="yesno" value="" placeholder="Enter Answer">
+                    
                     <button type="submit" class="btn btn-success" name="submit">Proceed</button>
                 </form>
                 {% else %}
