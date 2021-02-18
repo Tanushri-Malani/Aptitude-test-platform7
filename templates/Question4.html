@@ -8,11 +8,6 @@
             body{
                 background-color: rgb(230, 96, 44);
             }
-            div{
-                margin-top: 40px;
-                margin-bottom: auto;
-                background-color: rgb(230, 96, 44);
-            }
         </style>
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 
@@ -20,42 +15,41 @@
     <body onload="autoclick()" onkeydown="return (event.keyCode == 154)">
         <div class="container" align="center">
             <div class="jumbotron">
-                <form class="" action="/sec2sub/" method="post" id="qform">
+                <form class="" action="/sec3sub/" method="post" id="qform">
                     {% csrf_token %}
-                    {% for i in object_list %}
+                    {% for i in object_list %} 
                     <p class="q">{{i.question}}</p>
-                    <p style="display:none;" class="one">{{i.la.url}}</p>
-                    <p style="display:none;" class="two">{{i.lb.url}}</p>
-                    <p style="display:none;" class="three">{{i.lc.url}}</p>
-                    <p style="display:none;" class="four">{{i.ld.url}}</p>
-                    <img class="one" src="{{i.la.url}}" height="50px" width="50px">
-                    <img class="two" src="{{i.lb.url}}" height="50px" width="50px">
-                    <img class="three" src="{{i.lc.url}}" height="50px" width="50px">
-                    <img class="four" src="{{i.ld.url}}" height="50px" width="50px"><br><br>
+                    <p class="one">{{i.la}}</p>
+                    <p class="two">{{i.lb}}</p>
+                    <p class="three">{{i.lc}}</p>
+                    <p class="four">{{i.ld}}</p>
+                    
 
-                    <input type="text" name="x" value="" class="inp" placeholder="Enter Answer" autofocus="autofocus" />
-                    <button type="button" class="btn btn-success" name="repp" id="{{ forloop.counter }}" onclick="rep(this.id)">Repeat</button>
+                    
+                    
+                    <input type="text" name="x" value="" class="inp" autofocus="autofocus" />
+                    <button type="button" class="btn btn-success" id="{{ forloop.counter }}" onclick="rep(this.id)">Repeat</button>
+
+
                     <br><br><br><br>
-
-                    {% endfor %} 
-
+                    {% endfor %}
                     <button  style="display: none;" type="button" class="btn btn-success" id="dummy" >Submit1</button>
-
-                    <button type="submit" class="btn btn-success" name="submit">Submit</button>
-
+                    
+                    <button type="submit" class="btn btn-success" name="submit" id="ques1sub">Submit</button>
+                    
                 </form>
+
             </div>
         </div>
     </body>
     <script type="text/javascript">
             function autoclick() {
-
+                
                 console.log("nnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnn");
                 var mod="{{ mod }}";
 
                 var x = document.getElementById("qform").querySelectorAll("p.q");
                 var i;
-                var u="C:/bproject/project";
                 var que = [];
                 for (i = 0; i < x.length; i++) {
                     if (!String(x[i].textContent).endsWith("?")){
@@ -64,7 +58,7 @@
                     else{
                         que[i]=x[i].textContent;
                     }
-
+                    
                 }
                 console.log(que);
 
@@ -72,38 +66,39 @@
                 var j;
                 var o = [];
                 for (j = 0; j < y.length; j++) {
-                    o[j]=u+String(y[j].textContent)+"#";
+                    o[j]=String(y[j].textContent)+"#";
                 }
 
                 var z = document.getElementById("qform").querySelectorAll("p.two");
                 var k;
                 var op = [];
                 for (k = 0;  k< z.length; k++) {
-                    op[k]=u+String(z[k].textContent)+"#";
+                    op[k]=String(z[k].textContent)+"#";
 
                 }
-
+                
 
                 var w = document.getElementById("qform").querySelectorAll("p.three");
                 var l;
                 var opt = [];
                 for (l = 0; l < w.length; l++) {
-                    opt[l]=u+String(w[l].textContent)+"#";
+                    opt[l]=String(w[l].textContent)+"#";
                 }
 
                 var v = document.getElementById("qform").querySelectorAll("p.four");
                 var m;
                 var opti = [];
                 for (m = 0; m< v.length; m++) {
-                    opti[m]=u+String(v[m].textContent)+"#";
-
+                    opti[m]=String(v[m].textContent)+"#";
+                    
                 }
                 console.log(opti);
+            
 
 
                 console.log("yyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyy");
-
-
+                
+                
                 $("#dummy").click()
                     que = que.join();
                     o = o.join();
@@ -111,24 +106,27 @@
                     opt = opt.join();
                     opti = opti.join();
                     $.ajax({
-                        type: 'POST',
-                        url:  "/tts_s/",
+                        type: 'POST', 
+                        url:  "/tts/",
                         data:{'que': que,'o':o,'op':op,'opt':opt,'opti':opti,'mod':mod,'csrfmiddlewaretoken': '{{ csrf_token }}',},
                         success: function (data) {
-                            console.log("====================================================");
-
-
+                            console.log("===================================================="); 
+                            
+                            
                         },
                         error: function (data) {
                             console.log("66666666666666666666666666666666666666666666");
                             console.log(data);
 
-
+                
                     }
                 }
                 )
-
+            
             }
+
+            
+       
             function rep(cid) {
                 console.log(cid,"ccccccccccccccccccccccccccccccccccccccccccccc");
 
@@ -136,18 +134,18 @@
                 var que = [];
                 que[0]=String(x[cid-1].textContent)+"?";
                 console.log(x);
-
-
+                    
+                
 
                 var y = document.getElementById("qform").querySelectorAll("p.one");
                 var o = [];
                 o[0]=String(y[cid-1].textContent)+"#";
-
+                
 
                 var z = document.getElementById("qform").querySelectorAll("p.two");
                 var op = [];
                 op[0]=String(z[cid-1].textContent)+"#";
-
+                
 
                 var w = document.getElementById("qform").querySelectorAll("p.three");
                 var opt = [];
@@ -160,8 +158,8 @@
 
 
                 console.log("yyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyy");
-
-
+                
+                
                 $("#dummy").click()
                     que = que.join();
                     o = o.join();
@@ -169,19 +167,19 @@
                     opt = opt.join();
                     opti = opti.join();
                     $.ajax({
-                        type: 'POST',
+                        type: 'POST', 
                         url:  "/tts_repeat/",
                         data:{'que': que,'o':o,'op':op,'opt':opt,'opti':opti,'csrfmiddlewaretoken': '{{ csrf_token }}',},
                         success: function (data) {
-                            console.log("====================================================");
-
-
+                            console.log("===================================================="); 
+                            
+                            
                         },
                         error: function (data) {
                             console.log("66666666666666666666666666666666666666666666");
                             console.log(data);
 
-
+                
                     }
                 }
                 )

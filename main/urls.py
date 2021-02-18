@@ -22,11 +22,13 @@ urlpatterns=[
     path('pscores/', views.pscores, name='pscores'),
     path('logical/', views.object_list, name='logical'),
     path('quantitative/', views.quantitative, name='quantitative'),
+    path('spatial/', views.spatial, name='spatial'),
     path('login/', views.login, name='login'),
     path('register/', views.register, name='register'),
     url('logout/', views.logout, name='logout'),
     path('verbal/',views.verbal,name='verbal'),
     path('tts/', views.tts, name='tts'),
+    path('tts_s/', views.tts_s, name='tts_s'),
     path('tts1/', views.tts1, name='tts1'),
     path('tts_repeat/', views.tts_repeat, name='tts_repeat'),
     path('home/', views.home, name='home'),
@@ -37,7 +39,10 @@ urlpatterns=[
     path('sec1sub/', views.sec1sub, name='sec1sub'),
     path('sec3sub/', views.sec3sub, name='sec3sub'),
     path('sec2ins/', views.sec2ins, name='sec2ins'),
+    path('sec4ins/', views.sec4ins, name='sec4ins'),
     path('sec2sub/', views.sec2sub, name='sec2sub'),
+    path('sec4sub/', views.sec4sub, name='sec4sub'),
     path('result/', views.result, name='result'),
     
     ]
+urlpatterns+= static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

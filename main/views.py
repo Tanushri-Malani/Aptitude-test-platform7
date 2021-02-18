@@ -3,7 +3,7 @@ from django.http import JsonResponse
 from django.shortcuts import render,redirect
 from django.apps import apps
 import random
-from .models import Logical,Verbal,Test,Result,Quantitative
+from .models import Logical,Verbal,Test,Result,Quantitative,Spatial
 import pyttsx3 
 import speech_recognition as sr
 from pocketsphinx import LiveSpeech
@@ -26,6 +26,7 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth import logout as django_logout
 
 from django.apps import apps
+from main.utils import *
 
 @login_required(login_url='/login/')
 def object_list(request):
@@ -66,8 +67,21 @@ def quantitative(request):
 		n=1
 	olist = Quantitative.objects.all()
 	object_list=random.sample(set(olist), n)
-	template_name='Question3.html'
+	template_name='Question4.html'
 	mod='Quantitative'
+	return render(request, template_name, {'object_list': object_list,'mod': mod})
+
+@login_required(login_url='/login/')
+def spatial(request):
+	#Model = apps.get_model('ms', model)
+	try:
+		n=request.session['noofques']
+	except:
+		n=1
+	olist = Spatial.objects.all()
+	object_list=random.sample(set(olist), n)
+	template_name='Question3.html'
+	mod='Spatial'
 	return render(request, template_name, {'object_list': object_list,'mod': mod})
 
 
@@ -88,8 +102,10 @@ def tts(request):
 			ss='sec1sum'
 		elif model=="Verbal":
 			ss='sec2sum'
-		elif model=="Quantitative":
+		elif model=="Spatial":
 			ss='sec3sum'
+		elif model=="Quantitative":
+			ss='sec4sum'
 		#print(ss,"xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx")
 		#print(answ,"ffffffffffffffffffffffffffffffffffffffffffff")
 		ques=str(ques[0])
@@ -145,12 +161,14 @@ def tts(request):
 				time.sleep(1)
 				t -= 1
 			
-			#print(o1)
+			
 			z=str(o1[i])
+			#print(z,"llllllllllllllllllllllllllllllllllllllllllllllll")
 			if z[0]==",":
 				o1[i]=o1[i][1:]
+			#print("ggggggggggggggggggggggggggggggggggggggggggg",ques[i])
 			answe=Model.objects.filter(la=o1[i])
-			#print(answe[0])
+			print(answe,"kkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkk")
 			a='b'
 			
 			try:
@@ -167,7 +185,7 @@ def tts(request):
 				#print("++++++++++++++++!!1111111111111")
 				request.session[ss]=s1s
 		
-		print(request.session[ss],"sssssssssssssssssssssssssssssssssssssss",ss)
+		#print(request.session[ss],"sssssssssssssssssssssssssssssssssssssss",ss)
 			#print(answe[0].ans,s1s,"fffffffffffffffffffffffffffffffffff")
 			#b=answe
 			#if a==str(answe.ans):
@@ -183,6 +201,128 @@ def tts(request):
 	else:
 		return JsonResponse({}, status = 400)
 
+
+@csrf_exempt
+def tts_s(request):
+	if request.is_ajax and request.method == "POST":
+		#print("99999999999999999999999999999999999999999999999999999999999")
+		#print(request)
+		ques = request.POST.getlist("que")
+		o1= request.POST.getlist("o")
+		o2 = request.POST.getlist("op")
+		o3 = request.POST.getlist("opt")
+		o4 = request.POST.getlist("opti")
+		model= request.POST.get('mod')
+		Model= apps.get_model('main',model)
+		
+		if model=="Logical":
+			ss='sec1sum'
+		elif model=="Verbal":
+			ss='sec2sum'
+		elif model=="Spatial":
+			ss='sec3sum'
+		elif model=="Quantitative":
+			ss='sec4sum'
+		#print(ss,"xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx")
+		#print(answ,"ffffffffffffffffffffffffffffffffffffffffffff")
+		ques=str(ques[0])
+		ques=ques.split("?")
+		
+		o1=str(o1[0])
+		o1=o1.split("#")
+		o2=str(o2[0])
+		o2=o2.split("#")
+		o3=str(o3[0])
+		o3=o3.split("#")
+		o4=str(o4[0])
+		o4=o4.split("#")
+		#print("hhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhh")
+		#print(ques)
+		item=''
+		ques = [i for i in ques if i != item]
+		o1 = [i for i in o1 if i != item]
+		o2 = [i for i in o2 if i != item]
+		o3 = [i for i in o3 if i != item]
+		o4 = [i for i in o4 if i != item]
+		#print(ques,"2222222222222222222222222222222")
+		engine = pyttsx3.init()
+		#engine.say("hello")
+		#print("sssssssssssssssssssssssssssssssssssssssssssssssss")
+		engine.setProperty("rate", 300) 
+		#print((ques),"lllllllllllllllllllllllllllllllllllllllllllll")
+		#print("rrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrr")
+		#answe=[]
+		
+
+		for i in range(0,len(ques)): 
+			z=str(o1[i])
+			#print(z,"llllllllllllllllllllllllllllllllllllllllllllllll")
+			if z[0]==",":
+				o1[i]=o1[i][1:]
+			z=str(o2[i])
+				#print(z,"llllllllllllllllllllllllllllllllllllllllllllllll")
+			if z[0]==",":
+				o2[i]=o2[i][1:]
+			z=str(o3[i])
+				#print(z,"llllllllllllllllllllllllllllllllllllllllllllllll")
+			if z[0]==",":
+				o3[i]=o3[i][1:]
+			z=str(o4[i])
+			#print(z,"llllllllllllllllllllllllllllllllllllllllllllllll")
+			if z[0]==",":
+				o4[i]=o4[i][1:]
+			x='Question is'
+			#print(x)
+			engine.say(x)
+			engine.say(ques[i])
+			x="Options are "
+			engine.say(x)
+			engine.say("Option 1 is ")
+			engine.say(predict(o1[i]))
+			engine.say("Option 2 is ")
+			engine.say(predict(o2[i]))
+			engine.say("Option 3 is ")
+			engine.say(predict(o3[i]))
+			engine.say("Option 4 is ")
+			engine.say(predict(o4[i])) 
+			engine.say("Please speak the correct option ")
+			engine.runAndWait()
+			engine.stop()
+			t=2
+			while t: 
+				mins, secs = divmod(t, 60)
+				timer = '{:02d}:{:02d}'.format(mins, secs)
+				print(timer, end="\r")
+				time.sleep(1)
+				t -= 1
+			
+			
+			#z=str(o1[i])
+			o1[i]=o1[i].split("/")
+			#print(z,"llllllllllllllllllllllllllllllllllllllllllllllll")
+			o1[i]=o1[i][-1]
+			#print("ggggggggggggggggggggggggggggggggggggggggggg",o1[i])
+			answe=Model.objects.filter(la=o1[i])
+			#print(answe,"kkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkk")
+			a='b'
+			
+			try:
+				the_id=request.session['test_id']
+				the_rid=request.session['result_id']
+				s1s=request.session[ss]
+				test=Test.objects.get(id=the_id)
+			except:
+				the_id=None
+
+			#print(answe[0].ans,"iiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiii",a)
+			if str(answe[0].ans)==a:
+				#print("heyyyyy")
+				s1s=s1s+1
+				#print("++++++++++++++++!!1111111111111")
+				request.session[ss]=s1s
+		return JsonResponse({}, status = 200)
+	else:
+		return JsonResponse({}, status = 400)
 
 def home(request):
 	template_name='Home.html'
@@ -206,6 +346,7 @@ def instructions(request):
 	request.session['sec1sum']=0
 	request.session['sec2sum']=0
 	request.session['sec3sum']=0
+	request.session['sec4sum']=0
 	request.session['noofques']=2
 	the_id=new_test.id
 	template_name='Instructions.html'
@@ -247,6 +388,16 @@ def sec3sub(request):
 	return render(request, template_name)
 
 @login_required(login_url='/login/') 
+def sec4ins(request):
+	template_name='Section4Instructions.html'
+	return render(request, template_name)
+
+@login_required(login_url='/login/')   
+def sec4sub(request):
+	template_name='Section4Submission.html'
+	return render(request, template_name)
+
+@login_required(login_url='/login/') 
 def result(request):
 	try:
 		the_id=request.session['test_id']
@@ -254,7 +405,8 @@ def result(request):
 		s1s=request.session['sec1sum']
 		s2s=request.session['sec2sum']
 		s3s=request.session['sec3sum']
-		total=s1s+s2s+s3s
+		s4s=request.session['sec4sum']
+		total=s1s+s2s+s3s+s4s
 		r=Result.objects.get(id=the_rid)
 		print(r.Logical,"lllllllllllllllllllllllllllllrrrrrrrrrrrrrrrrrrrrrrrrrrr")
 		r.user=request.user
@@ -262,7 +414,8 @@ def result(request):
 		r.Logical=s1s
 		print(r.Logical,"llllllllllllllllllaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",s1s)
 		r.Verbal=s2s
-		r.Quantitative=s3s
+		r.Spatial=s3s
+		r.Quantitative=s4s
 		r.save()
 		test=Test.objects.get(id=the_id)
 		test.delete()
@@ -271,7 +424,7 @@ def result(request):
 		print("Not able to finish test while checking results")
 		pass
 	template_name='result.html'
-	return render(request, template_name,{'s1s': s1s,'s2s': s2s,'s3s':s3s,'total': total})
+	return render(request, template_name,{'s1s': s1s,'s2s': s2s,'s3s':s3s,'s4s':s4s,'total': total})
 
 #def login(request):
 	#template_name='Login.html'
