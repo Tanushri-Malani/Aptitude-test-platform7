@@ -17,7 +17,7 @@ app_name='main'
 
 urlpatterns=[
     path('admin/', admin.site.urls),
-    path('',views.home),
+    path('',views.login),
     #url(r'repeat/(?P<id>\d+)/',views.repeat,name='repeat')
     path('pscores/', views.pscores, name='pscores'),
     path('logical/', views.object_list, name='logical'),
@@ -30,6 +30,7 @@ urlpatterns=[
     path('tts/', views.tts, name='tts'),
     path('tts_s/', views.tts_s, name='tts_s'),
     path('tts1/', views.tts1, name='tts1'),
+    path('cam/', views.cam, name='cam'),
     path('tts_repeat/', views.tts_repeat, name='tts_repeat'),
     path('home/', views.home, name='home'),
     path('instructions/', views.instructions, name='instructions'),

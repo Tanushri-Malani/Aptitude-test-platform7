@@ -66,3 +66,12 @@ class Result(models.Model):
 	def __str__(self):
 		return (str(self.user)+" : "+str(self.id))
 
+class UserProfile(models.Model):
+    user=models.OneToOneField(User,on_delete=models.CASCADE,primary_key=True)
+    head_shot=models.ImageField(upload_to='profil_images',blank=True)
+    
+    class Meta:
+        ordering = ["user"]
+
+    def __str__(self):
+        return self.user.username

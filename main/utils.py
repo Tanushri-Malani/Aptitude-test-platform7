@@ -3,7 +3,7 @@ import numpy as np
 import tensorflow as tf
 
 def predict(u):
-	model = keras.models.load_model('C:/Users/Tanu/Documents/BE p')
+	model = keras.models.load_model('C:/Users/Tanu/Documents/BE p1')
 	img_url = str(u)
 	img_height = 200
 	img_width = 200

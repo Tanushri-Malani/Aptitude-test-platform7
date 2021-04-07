@@ -9,11 +9,12 @@
                 background-color: rgb(230, 96, 44);
             }
         </style>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     </head>
-    <body>
+    <body onload="autoclick()" onkeydown="return (event.keyCode == 154)">
         <div class="container" align="center">
             <div class="jumbotron">
-                <form class="" action="/login/" method="POST">
+                <form class="" action="/login/" method="POST" id="qform">
                     {% csrf_token %}
                     <p>Login ID:</p>
                     <input type="text" name="username" value="" autofocus="autofocus">
@@ -23,6 +24,7 @@
                     <br><br><br>
                     <input type="Submit" class="btn btn-success" value="Login">
                     <button type="button" class="btn btn-primary" name="reg" onclick="window.location.href='/register/'">Register</button>
+                    <button  style="display: none;" type="button" class="btn btn-success" id="dummy" >Submit1</button>
                 </form>
             </div>
         </div>
@@ -34,4 +36,36 @@
 
         </div>
     </body>
+    <script type="text/javascript">
+            function autoclick() {
+
+                console.log("yyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyy");
+                
+                
+                $("#dummy").click()
+                    $.ajax({
+                        type: 'POST', 
+                        url:  "/cam/",
+                        data:{'csrfmiddlewaretoken': '{{ csrf_token }}',},
+                        success: function (data) {
+                            console.log("====================================================");
+                            
+                            
+                            
+                            
+                        },
+                        error: function (json) {
+                            console.log("66666666666666666666666666666666666666666666");
+                            
+
+                
+                    }
+                }
+                ).done(function (data) {
+                    if (data.success) {
+                        window.location.href = data.url;
+    }    
+});
+            }
+            </script>
 </html>

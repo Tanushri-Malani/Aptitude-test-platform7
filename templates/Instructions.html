@@ -1,3 +1,5 @@
+
+
 <!DOCTYPE html>
 <html>
     <head>
@@ -8,22 +10,101 @@
             body{
                 background-color: rgb(230, 96, 44);
             }
+            .ins{
+                text-align: center;
+            }
         </style>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     </head>
-    <body>
+    
+    <body onload="autoclick()" onkeydown="return (event.keyCode == 154)">
         <div class="container" align="center">
-            <div class="jumbotron">
-                <p>Instructions</p>
+            <div class="jumbotron" id="jumbo">
+                <p class="ins">INSTRUCTIONS</p>
+                <p>1. There will be 4 sections, one after another in the following order: Logical, Verbal, Quantitative and  Spatial.</p>
+                <p>2. Section wise instructions will be given before each section.</p>
+                <p>3. After starting the section, question and its options will be read out to you and you will be asked to answer it. After that your answer will be recorded.</p>
+                <p>4. You have to give your answer as option 1, option 2, option 3 or option 4. Anything else will not be considered as answer.</p>
+                <P>5. If you wish to hear the question and its options again then you have to say repeat when you are asked for the answer.</p>
+                <p>6. You can request to repeat the question at the max 2 times.</p>
+                <p>7. All the questions are compulsory to attend.</p>
+                <p>8. Section will be automatically submitted after you have attempted all the questions.</p>
+                <p>9. After completing all the sections, test will be submitted and the total score and section wise score will be read out loud.</p>
+                <p class="ins">ALL THE BEST!!</p>
+
                 {% if user.is_authenticated %}
-                <form class="" action="/sec1ins/" method="post">
+                <form align="center" action="/sec1ins/" method="post">
                     {% csrf_token %}
+                    <!-- <input type="text" name="yesno" value="" placeholder="Enter Answer"> -->
+                    <button type="submit" style="margin-left:auto; margin-right:auto;" class="btn btn-success" name="proceed">Proceed</button>
                     
-                    <button type="submit" class="btn btn-success" name="submit">Proceed</button>
                 </form>
+                <button  style="display: none;" type="button" class="btn btn-success" id="dummy" >Submit1</button>
                 {% else %}
                 <button type="button" class="btn btn-primary" name="reg" onclick="window.location.href='/login/'">Login</button>
                 {% endif %}
             </div>
         </div>
     </body>
+
+        <script type="text/javascript">
+                function autoclick() {
+
+                    console.log("nnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnn");
+
+                    var x = document.getElementById("jumbo").querySelectorAll("p");
+                    var y = document.getElementById("jumbo").querySelectorAll("button");
+                    var i;
+                    var que = [];
+                    var but = [];
+                    for (i = 0; i < x.length; i++) {
+                        if (!String(x[i].textContent).endsWith("?")){
+                            que[i]=String(x[i].textContent)+"?";
+                        }
+                        else{
+                            que[i]=x[i].textContent;
+                        }
+
+                    }
+
+                    for (i = 0; i < y.length; i++) {
+                        if (!String(y[i].textContent).endsWith("?")){
+                            but[i]=String(y[i].textContent)+"?";
+                        }
+                        else{
+                            but[i]=y[i].textContent;
+                        }
+                    
+                    }
+
+                    console.log(que);
+
+                    console.log("yyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyy");
+
+
+                    $("#dummy").click()
+                        que = que.join();
+                        but = but.join();
+
+                        $.ajax({
+                            type: 'POST',
+                            url:  "/tts1/",
+                            data:{'que': que,but,'csrfmiddlewaretoken': '{{ csrf_token }}',},
+                            success: function (data) {
+                                console.log("====================================================");
+
+
+                            },
+                            error: function (data) {
+                                console.log("66666666666666666666666666666666666666666666");
+
+
+                        }
+                    }
+                    )
+
+                }
+    </script>
+
+
 </html>

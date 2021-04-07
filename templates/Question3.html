@@ -20,7 +20,7 @@
     <body onload="autoclick()" onkeydown="return (event.keyCode == 154)">
         <div class="container" align="center">
             <div class="jumbotron">
-                <form class="" action="/sec2sub/" method="post" id="qform">
+                <form class="" action="/sec3sub/" method="post" id="qform">
                     {% csrf_token %}
                     {% for i in object_list %}
                     <p class="q">{{i.question}}</p>

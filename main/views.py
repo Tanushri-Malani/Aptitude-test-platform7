@@ -3,7 +3,7 @@ from django.http import JsonResponse
 from django.shortcuts import render,redirect
 from django.apps import apps
 import random
-from .models import Logical,Verbal,Test,Result,Quantitative,Spatial
+from .models import Logical,Verbal,Test,Result,Quantitative,Spatial,UserProfile
 import pyttsx3 
 import speech_recognition as sr
 from pocketsphinx import LiveSpeech
@@ -27,6 +27,14 @@ from django.contrib.auth import logout as django_logout
 
 from django.apps import apps
 from main.utils import *
+import cv2
+import face_recognition
+import os
+from django.core.files import File
+import numpy as np
+
+u=0
+#known_faces=[]
 
 @login_required(login_url='/login/')
 def object_list(request):
@@ -502,6 +510,7 @@ def tts_repeat(request):
 	if request.is_ajax and request.method == "POST":
 		#print("99999999999999999999999999999999999999999999999999999999999")
 		#print(request)
+		nombre = request.POST['nombre']
 		ques = request.POST.getlist("que")
 		o1= request.POST.getlist("o")
 		o2 = request.POST.getlist("op")
@@ -554,7 +563,10 @@ def tts_repeat(request):
 			engine.runAndWait()
 			engine.stop()
 		#print("rrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrreeeeeeeeeeeeeeeeeeeeeeee")
-		return JsonResponse({}, status = 200)
+		data={
+		  'nombre':nombre
+		}
+		return JsonResponse({data}, status = 200)
 	else:
 		return JsonResponse({}, status = 400)
 
@@ -563,38 +575,146 @@ def tts_repeat(request):
 def tts1(request):
 	#print("88888888888888888888888888888888888888888888")
 	if request.is_ajax and request.method == "POST":
-		#print("99999999999999999999999999999999999999999999999999999999999")
+		print("99999999999999999999999999999999999999999999999999999999999")
 		#print(request)
 		ques = request.POST.getlist("que")
 		buts = request.POST.getlist("but")
-		#print(buts)
-		ques=str(ques[0])
-		buts=str(buts[0])
+		o1 = request.POST.getlist("o")
+		o2 = request.POST.getlist("op")
+		o3 = request.POST.getlist("opt")
+		o4 = request.POST.getlist("opti")
+		print(ques,"IIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIII",buts)
+		if len(o1)==0:
+			ques=str(ques[0])
+			buts=str(buts[0])
 
-		ques=ques.split("?")
-		buts=buts.split("?")
+			ques=ques.split("?")
+			buts=buts.split("?")
 
-		item=''
-		ques = [i for i in ques if i != item]
-		buts = [i for i in buts if i != item]
+			item=''
+			ques = [i for i in ques if i != item]
+			buts = [i for i in buts if i != item]
 
-		item='Submit1'
-		buts = [i for i in buts if i != item]
-		print(buts)
+			item=',Submit1'
+			item1="Submit1"
+			buts = [i for i in buts if i != item and i!=item1]
+			print(buts)
 
-		engine = pyttsx3.init()
-		engine.setProperty("rate", 200)
-		#print(engine)
-		#engine.say("hello hi")
-		#print("sssssssssssssssssssssssssssssssssssssssssssssssss")
-		#print((ques),"lllllllllllllllllllllllllllllllllllllllllllll")
-		#print("rrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrr")
-		#answe=[]
-		for i in range(0,len(ques)):
-			z=str(ques[i])
-			if z[0]==",":
-				ques[i]=ques[i][1:]
-			engine.say(ques[i])
+			engine = pyttsx3.init()
+			engine.setProperty("rate", 200)
+			#print(engine)
+			#engine.say("hello hi")
+			#print("sssssssssssssssssssssssssssssssssssssssssssssssss")
+			#print((ques),"lllllllllllllllllllllllllllllllllllllllllllll")
+			#print("rrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrr")
+			#answe=[]
+			for i in range(0,len(ques)):
+				z=str(ques[i])
+				if z[0]==",":
+					ques[i]=ques[i][1:]
+				engine.say(ques[i])
+		else:
+			model= request.POST.get('mod')
+			Model= apps.get_model('main',model)
+		
+			if model=="Logical":
+				ss='sec1sum'
+			elif model=="Verbal":
+				ss='sec2sum'
+			elif model=="Spatial":
+				ss='sec3sum'
+			elif model=="Quantitative":
+				ss='sec4sum'
+			#print(ss,"xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx")
+			#print(answ,"ffffffffffffffffffffffffffffffffffffffffffff")
+			ques=str(ques[0])
+			buts=str(buts[0])
+			ques=ques.split("?")
+			buts=buts.split("?")
+			
+			o1=str(o1[0])
+			o1=o1.split("#")
+			o2=str(o2[0])
+			o2=o2.split("#")
+			o3=str(o3[0])
+			o3=o3.split("#")
+			o4=str(o4[0])
+			o4=o4.split("#")
+			#print("hhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhh")
+			#print(ques)
+			item=''
+			buts = [i for i in buts if i != item]
+			ques = [i for i in ques if i != item]
+			o1 = [i for i in o1 if i != item]
+			o2 = [i for i in o2 if i != item]
+			o3 = [i for i in o3 if i != item]
+			o4 = [i for i in o4 if i != item]
+
+			item=',Submit1'
+			item1="Submit1"
+			item2=',Repeat'
+			item3="Repeat"
+			buts = [i for i in buts if i != item and i!=item1 and i!=item2 and i!=item3]
+			print(buts)
+
+			#print(ques,"2222222222222222222222222222222")
+			engine = pyttsx3.init()
+			#engine.say("hello")
+			#print("sssssssssssssssssssssssssssssssssssssssssssssssss")
+			engine.setProperty("rate", 300) 
+			#print((ques),"lllllllllllllllllllllllllllllllllllllllllllll")
+			#print("rrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrr")
+			#answe=[]
+			for i in range(0,len(ques)): 
+				x='Question is'
+				#print(x)
+				engine.say(x)
+				engine.say(ques[i])
+				x="Options are "
+				engine.say(x)
+				engine.say("Option 1 is ")
+				engine.say(o1[i])
+				engine.say("Option 2 is ")
+				engine.say(o2[i])
+				engine.say("Option 3 is ")
+				engine.say(o3[i])
+				engine.say("Option 4 is ")
+				engine.say(o4[i]) 
+				engine.say("Please speak the correct option ")
+				engine.runAndWait()
+				engine.stop()
+				t=2
+				while t: 
+					mins, secs = divmod(t, 60)
+					timer = '{:02d}:{:02d}'.format(mins, secs)
+					print(timer, end="\r")
+					time.sleep(1)
+					t -= 1
+				
+				
+				z=str(o1[i])
+				#print(z,"llllllllllllllllllllllllllllllllllllllllllllllll")
+				if z[0]==",":
+					o1[i]=o1[i][1:]
+				#print("ggggggggggggggggggggggggggggggggggggggggggg",ques[i])
+				answe=Model.objects.filter(la=o1[i])
+				print(answe,"kkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkk")
+				a='b'
+				
+				try:
+					the_id=request.session['test_id']
+					the_rid=request.session['result_id']
+					s1s=request.session[ss]
+					test=Test.objects.get(id=the_id)
+				except:
+					the_id=None
+
+				#print(the_id,"iiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiii",s1s)
+				if str(answe[0].ans)==a:
+					s1s=s1s+1
+					#print("++++++++++++++++!!1111111111111")
+					request.session[ss]=s1s
+
 		
 
 		if len(buts)>1:
@@ -617,3 +737,150 @@ def tts1(request):
 		return JsonResponse({}, status = 200)
 	else:
 		return JsonResponse({}, status = 400)
+
+
+def cam(request):
+	#print("88888888888888888888888888888888888888888888")
+	if request.is_ajax and request.method == "POST":
+		#print("cccccccccccccccccccccccccccccccccccccccccccc")
+		global u
+		#global known_faces
+		engine = pyttsx3.init()
+		engine.setProperty("rate", 200)
+		engine.say("To login, align your face in front of the camera and look straight into the camera for recognition.")
+		engine.say("Starting the camera")
+		engine.runAndWait()
+		engine.stop()
+		f=0
+		while (f!=1):
+			cam = cv2.VideoCapture(0)
+
+			cv2.namedWindow("test")
+
+			img_counter = 0
+
+			while True:
+			    ret, frame = cam.read()
+			    if not ret:
+			        print("Failed to grab frame")
+			        break
+			    cv2.imshow("test", frame)
+
+			    k = cv2.waitKey(1)
+			    if k%256 == 27:
+			        # ESC pressed
+			        print("Escape hit, closing...")
+			        break
+			    elif k%256 == 32:
+			        # SPACE pressed
+			        img_name = "opencv_frame_{}.png".format(img_counter)
+			        cv2.imwrite(img_name, frame)
+			        print("{} written!".format(img_name))
+			        img_counter += 1
+
+			cam.release()
+			cv2.destroyAllWindows()
+			
+			ilist1=[]
+			ilist = UserProfile.objects.all()
+			for z in ilist:
+				ilist1.append(z.head_shot)
+			print(ilist1)
+			known_faces=[]
+			known_names=[]
+			known_loc=[]
+			for y in ilist1:
+				face_1_image = face_recognition.load_image_file(y)
+				face_1_face_encoding = face_recognition.face_encodings(face_1_image)
+				known_faces.append(face_1_face_encoding)
+				known_names.append((str(y).split("/")[-1]).split(".")[0])
+			#print(known_faces,"nnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnn")
+			small_frame = cv2.resize(frame, (0, 0), fx=0.25, fy=0.25)
+			rgb_small_frame = small_frame[:, :, ::-1]
+
+			face_locations = face_recognition.face_locations(rgb_small_frame)
+			face_encodings = face_recognition.face_encodings(rgb_small_frame, face_locations)
+
+			if (len(face_encodings)==0):
+				engine = pyttsx3.init()
+				engine.setProperty("rate", 200)
+				engine.say("No face detected.")
+				engine.say("Starting the camera again.")
+				engine.runAndWait()
+				engine.stop()
+				continue
+			elif (len(face_encodings)>1):
+				engine = pyttsx3.init()
+				engine.setProperty("rate", 200)
+				engine.say("Image has more than 1 people.")
+				engine.say("Starting the camera again.")
+				engine.runAndWait()
+				engine.stop()
+				continue
+			elif (len(face_encodings)==1):
+				f=1
+		l=0
+		for j in range(0,len(known_faces)): 
+			print((known_faces[j]),(face_encodings))
+			check=face_recognition.compare_faces(np.array(known_faces[j]),np.array(face_encodings))
+			match=None
+			if True in check and len(face_encodings)==1:
+				match=known_names[j]
+				engine = pyttsx3.init()
+				engine.setProperty("rate", 200)
+				engine.say("You are registered and Match found is ",match)
+				engine.runAndWait()
+				engine.stop()
+				print("You are registered and Match found is ",match)
+				l=1
+				u1=UserProfile.objects.filter(head_shot="profil_images/"+match+".png")
+				#print(u1,"uuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuu")
+				print((UserProfile.objects.filter(user=u1[0].user))[0].user.username)
+				username=str((UserProfile.objects.filter(user=u1[0].user))[0].user.username)
+				password=str((UserProfile.objects.filter(user=u1[0].user))[0].user.username)
+				user=auth.authenticate(username=username,password=password)
+				print(user)
+				if user is not None:
+					#print("6666666666666666666666666666666666666666666666666")
+					auth.login(request,user)
+					#print("7777777777777777777777777777777777777777777777777777777")
+					return JsonResponse({
+                		'success': True,
+                		'url':'/home/',
+             
+            			})
+					#return redirect("/home/")
+				else:
+					messages.info(request,'Invalid credentials')
+					return redirect("/login/")
+		#print(check,"cccccccccccccccccccccccccccccchhhhhhhhhhhhhhhhhhhhhhhhh")
+		if l==0 and (len(face_encodings)==1):
+			print("You are not registered.")
+			engine = pyttsx3.init()
+			engine.setProperty("rate", 200)
+			engine.say("You are not registered.")
+			engine.runAndWait()
+			engine.stop()
+			username="user"+str(u)
+			password="user"+str(u)
+			user1=User.objects.create_user(username=username,password=password)
+			user1.is_active=True
+			user1.save()
+			print('user created')
+			u=u+1
+			user3=auth.authenticate(username=username,password=password)
+			print(user3)
+			user2 = UserProfile(user=user3)
+			user2.head_shot.save(str(username)+".png", File(open('opencv_frame_0.png','rb')))
+			print("Image is saved and user is registered.")
+			return JsonResponse({
+                		'success': True,
+                		'url':'/login/',
+             
+            			})
+
+		
+
+			
+
+	return JsonResponse({ 'success': False })

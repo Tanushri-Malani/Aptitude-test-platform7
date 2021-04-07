@@ -27,7 +27,7 @@
 
                     
                     
-                    <input type="text" name="x" value="" class="inp" autofocus="autofocus" />
+                    <input type="text" id="input1" name="x" value="abc" class="inp" autofocus="autofocus" />
                     <button type="button" class="btn btn-success" id="{{ forloop.counter }}" onclick="rep(this.id)">Repeat</button>
 
 
@@ -49,8 +49,10 @@
                 var mod="{{ mod }}";
 
                 var x = document.getElementById("qform").querySelectorAll("p.q");
+                var a = document.getElementById("qform").querySelectorAll("button");
                 var i;
                 var que = [];
+                var but = [];
                 for (i = 0; i < x.length; i++) {
                     if (!String(x[i].textContent).endsWith("?")){
                         que[i]=String(x[i].textContent)+"?";
@@ -93,6 +95,16 @@
                     
                 }
                 console.log(opti);
+
+                for (i = 0; i < a.length; i++) {
+                        if (!String(a[i].textContent).endsWith("?")){
+                            but[i]=String(a[i].textContent)+"?";
+                        }
+                        else{
+                            but[i]=a[i].textContent;
+                        }
+                    
+                    }
             
 
 
@@ -105,24 +117,28 @@
                     op = op.join();
                     opt = opt.join();
                     opti = opti.join();
+                    but = but.join();
                     $.ajax({
                         type: 'POST', 
-                        url:  "/tts/",
-                        data:{'que': que,'o':o,'op':op,'opt':opt,'opti':opti,'mod':mod,'csrfmiddlewaretoken': '{{ csrf_token }}',},
+                        url:  "/tts1/",
+                        
+                        data:{'que': que,'o':o,'op':op,'opt':opt,'opti':opti,'mod':mod,'but':but,'csrfmiddlewaretoken': '{{ csrf_token }}',},
+                        
                         success: function (data) {
-                            console.log("===================================================="); 
+                            console.log("====================================================");
+                            
+                            
                             
                             
                         },
-                        error: function (data) {
+                        error: function (json) {
                             console.log("66666666666666666666666666666666666666666666");
-                            console.log(data);
+                            
 
                 
                     }
                 }
                 )
-            
             }
 
             
